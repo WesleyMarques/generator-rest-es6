@@ -5,6 +5,7 @@ import logger from 'morgan';
 import path from 'path';
 import cors from 'cors';
 import compression from 'compression';
+import cookieParser from 'cookie-parser';
 
 import config from './config/env.config';
 

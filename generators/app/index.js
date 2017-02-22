@@ -58,8 +58,34 @@
     }
 
     configuring() {
+      this.destinationRoot('./' + this.props.appname);
+    }
+
+    writing() {
+      copyTemplate(this.fs, this.templatePath('.jshint'), this.destinationPath('.jshint'));
+      copyTemplate(this.fs, this.templatePath('app.js'), this.destinationPath('app.js'));
+      copyTemplate(this.fs, this.templatePath('.gitignore'), this.destinationPath('.gitignore'));
+      copyTemplate(this.fs, this.templatePath('.editorconfig'), this.destinationPath('.editorconfig'));
+      copyTemplate(this.fs, this.templatePath('.babelrc'), this.destinationPath('.babelrc'));
+
       copyTemplate(this.fs, this.templatePath('_package.json'), this.destinationPath('package.json'), {
         appName: this.props.appname
+      });
+      copyTemplate(this.fs, this.templatePath('bin/_www'), this.destinationPath('bin/www'), {
+        appName: this.props.appname
+      });
+      copyTemplate(this.fs, this.templatePath('config/*'), this.destinationPath('config/'));
+      copyTemplate(this.fs, this.templatePath('server/*'), this.destinationPath('server/'));
+
+
+    }
+
+    end() {
+      this.npmInstall(['express', 'debug', 'body-parser', 'cors', 'compression', 'morgan', 'cookie-parser'], {
+        'save': true
+      });
+      this.npmInstall(['mocha', 'chai', 'nodemon', 'supertest', 'testdouble', 'babel-cli', 'babel', 'babel-preset-es2015', 'babel-preset-stage-2'], {
+        'saveDev': true
       });
     }
   };
