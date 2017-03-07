@@ -6,6 +6,8 @@ import path from 'path';
 import cors from 'cors';
 import compression from 'compression';
 import cookieParser from 'cookie-parser';
+import datasource from './config/datasource';
+import dbconfig from './config/config';
 
 import config from './config/env.config';
 
@@ -37,11 +39,11 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(cookieParser());
 
-
 if (process.env.NODE_ENV !== 'test') {
   app.use(logger('dev'));
 }
 
 app.config = config[process.env.NODE_ENV || 'development'];
+app.dbconfig = datasource(app);
 
 export default app;

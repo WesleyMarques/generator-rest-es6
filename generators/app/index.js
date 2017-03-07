@@ -18,14 +18,15 @@
     constructor(args, opts) {
       super(args, opts);
       this.option('skip-install');
-      this.argument('appname', {
-        type: String,
-        desc: 'In module format. Ex: `ingenico-terminal`',
-        required: false
-      });
 
-      this.options.appname = this.appname || path.basename(process.cwd());
-
+      // this.argument('model', {
+      //   type: String,
+      //   desc: 'In path format. Ex: `./Account.json`',
+      //   required: true
+      // });
+      //
+      // var model = this.fs.readJSON(this.args[0]);
+      this.options.appname = path.basename(process.cwd());
       this.props = {};
     }
 
