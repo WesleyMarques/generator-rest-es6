@@ -6,20 +6,16 @@
  */
 
 import app from '../app';
-import debug from 'debug';
 import http from 'http';
 
-const log = debug('<%= appName %>:server');
-const logError = debug('<%= appName %>:error:server');
-logError.color = 1;
-log.color = 2;
+var log = app.log;
 
 var onListening = () => {
 	var addr = server.address();
 	var bind = typeof addr === 'string' ?
 		'pipe ' + addr :
 		'port ' + addr.port;
-	log('Listening on %s', bind);
+	log.info('Listening on %s', bind);
 };
 
 /**
@@ -54,11 +50,11 @@ var onError = (error) => {
 	// handle specific listen errors with friendly messages
 	switch (error.code) {
 		case 'EACCES':
-			logError('%s requires elevated privileges', bind);
+			log.error('%s requires elevated privileges', bind);
 			process.exit(1);
 			break;
 		case 'EADDRINUSE':
-			logError('%s is already in use', bind);
+			log.error('%s is already in use', bind);
 			process.exit(1);
 			break;
 		default:

@@ -5,20 +5,27 @@ import path from 'path';
 
 let database = null;
 
-const loadModels = (sequelize) => {
-  const dir = path.join(__dirname, '../models');
+const loadModels = (sequelize, app) => {
+  const dir = path.join(__dirname, '../server/models');
   const models = [];
-  fs.readdirSync(dir).forEach(file => {
-    const modelDir = path.join(dir, file);
-    const model = sequelize.import(modelDir);
-    models[model.name] = model;
-  });
+  try {
+	  if(!fs.existsSync(dir)) return {};
+	  fs.readdirSync(dir).forEach(file => {
+		  const modelDir = path.join(dir, file);
+		  const model = sequelize.import(modelDir);
+		  models[model.name] = model;
+	  });
+  } catch (e) {
+	  app.log.error(e);
+  } finally {
+
+  }
   return models;
 };
 
 export default function (app) {
   if (!database) {
-    const config = app.config;
+    const config = app.configdb;
     const sequelize = new Sequelize(
         config.database,
         config.username,
@@ -32,7 +39,7 @@ export default function (app) {
       models: {},
     };
 
-    database.models = loadModels(sequelize);
+    database.models = loadModels(sequelize, app);
 
     sequelize.sync().done(() => database);
   }

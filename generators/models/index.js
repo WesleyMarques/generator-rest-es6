@@ -44,15 +44,15 @@
     }
 
     configuring() {
-      this.destinationRoot('./server/models');
+      this.destinationRoot('./server');
     }
 
     writing() {
-      copyTemplate(this.fs, this.templatePath('_model.js'), this.destinationPath(this.options.modelObj.name+'.model.js'),{
+      copyTemplate(this.fs, this.templatePath('_model.js'), this.destinationPath('models/'+this.options.modelObj.name+'.model.js'),{
         modelName: this.options.modelObj.name,
         modelObj: this.options.modelObj
       });
-      copyTemplate(this.fs, this.templatePath('_crud-model.js'), this.destinationPath(this.options.modelObj.name+'-crud-model.js'),{
+      copyTemplate(this.fs, this.templatePath('_crud-model.js'), this.destinationPath('controllers/'+this.options.modelObj.name+'-crud-model.js'),{
         modelName: this.options.modelObj.name
       });
     }

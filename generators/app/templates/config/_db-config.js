@@ -1,8 +1,8 @@
 //jshint esversion: 6
 export default {
-  database: '<%= dbName %>',
-  username: '',
-  password: '',
+  database: '<DATABASE-NAME>',
+  username: '<DATABASE-USERNAME>',
+  password: '<DATABASE-PASSWORD>',
   params: {
     dialect: '<%= dbType %>',
     define: {
