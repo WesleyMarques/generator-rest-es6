@@ -55,6 +55,9 @@
       copyTemplate(this.fs, this.templatePath('_crud-model.js'), this.destinationPath('controllers/'+this.options.modelObj.name+'-crud-model.js'),{
         modelName: this.options.modelObj.name
       });
+      copyTemplate(this.fs, this.templatePath('routes/_routes.js'), this.destinationPath('routes/'+this.options.modelObj.name+'.js'),{
+        modelName: this.options.modelObj.name
+      });
     }
 
     end() {}

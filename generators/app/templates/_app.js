@@ -10,6 +10,7 @@ import datasource from './config/datasource';
 import dbconfig from './config/db-config';
 import debug from 'debug';
 
+
 const log = debug('<%= appName %>:server');
 const logError = debug('<%= appName %>:error:server');
 logError.color = 1;
