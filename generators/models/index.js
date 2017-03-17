@@ -58,6 +58,7 @@
       copyTemplate(this.fs, this.templatePath('routes/_routes.js'), this.destinationPath('routes/'+this.options.modelObj.name+'.js'),{
         modelName: this.options.modelObj.name
       });
+      console.log(this.fs.read(this.destinationPath('../app.js')));
     }
 
     end() {}

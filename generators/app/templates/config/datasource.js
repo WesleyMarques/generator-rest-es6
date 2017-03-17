@@ -6,7 +6,7 @@ import path from 'path';
 let database = null;
 
 const loadModels = (sequelize, app) => {
-	const dir = path.join(__dirname, '../server/models');
+	const dir = path.join(__dirname, '../server/models/');
 	const models = [];
 	try {
 		if (!fs.existsSync(dir)) return {};

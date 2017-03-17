@@ -4,7 +4,7 @@ import <%= modelName %>Controller from '../controllers/<%= modelName %>-crud-mod
 export default (app) => {
   const <%- modelName.toLowerCase() %>Controller = new <%= modelName %>Controller(app.dbconfig.models.<%= modelName %>);
   app.route('/<%- modelName.toLowerCase() %>')
-  .all(app.auth.authenticate())
+  // .all(app.auth.authenticate())
   .get((req, res) => {
     <%- modelName.toLowerCase() %>Controller.getAll()
     .then(response => {
@@ -21,7 +21,7 @@ export default (app) => {
   });
 
   app.route('/<%- modelName.toLowerCase() %>/:id')
-  .all(app.auth.authenticate())
+  // .all(app.auth.authenticate())
   .get((req, res) => {
     <%- modelName.toLowerCase() %>Controller.getById(req.params)
     .then(response => {

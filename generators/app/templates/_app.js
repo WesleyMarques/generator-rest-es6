@@ -10,6 +10,9 @@ import datasource from './config/datasource';
 import dbconfig from './config/db-config';
 import debug from 'debug';
 
+<!-- injectRoutes:START -->
+<!-- injectRoutes:END -->
+
 
 const log = debug('<%= appName %>:server');
 const logError = debug('<%= appName %>:error:server');
@@ -57,5 +60,9 @@ if (process.env.NODE_ENV !== 'test') {
 app.config = config[process.env.NODE_ENV || 'development'];
 app.configdb = dbconfig;
 app.dbconfig = datasource(app);
+
+<!-- injectRoutesFun:START -->
+<!-- injectRoutesFun:END -->
+
 
 export default app;
