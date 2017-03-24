@@ -78,6 +78,7 @@
         appName: this.props.appname
       });
       copyTemplate(this.fs, this.templatePath('config/env.config.js'), this.destinationPath('config/env.config.js'));
+      copyTemplate(this.fs, this.templatePath('config/_config.js'), this.destinationPath('config/config.js'));
       copyTemplate(this.fs, this.templatePath('config/datasource.js'), this.destinationPath('config/datasource.js'));
       copyTemplate(this.fs, this.templatePath('config/_db-config.js'), this.destinationPath('config/db-config.js'),{
         dbName: this.props.appname,
@@ -89,7 +90,7 @@
     }
 
     end() {
-      this.npmInstall(['express', 'debug', 'body-parser', 'cors', 'compression', 'morgan', 'cookie-parser', 'sequelize', 'pg', 'pg-hstore', 'http-status'], {
+      this.npmInstall(['express', 'debug', 'body-parser', 'cors', 'compression', 'morgan', 'cookie-parser', 'sequelize', 'pg', 'pg-hstore', 'http-status', 'sequelize-cli'], {
         'save': true
       });
       this.npmInstall(['mocha', 'chai', 'nodemon', 'supertest', 'testdouble', 'babel-cli', 'babel', 'babel-preset-es2015', 'babel-preset-stage-2'], {
