@@ -1,5 +1,7 @@
-# generator-ingenico-api [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url] [![Coverage percentage][coveralls-image]][coveralls-url]
-> 
+# generator-rest-es6
+An Express generator for Yeoman with models generated from json file.
+
+[![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url] [![Coverage percentage][coveralls-image]][coveralls-url]
 
 ## Installation
 
@@ -7,13 +9,13 @@ First, install [Yeoman](http://yeoman.io) and generator-ingenico-api using [npm]
 
 ```bash
 npm install -g yo
-npm install -g generator-ingenico-api
+npm install -g generator-rest-es6
 ```
 
 Then generate your new project:
 
 ```bash
-yo ingenico-api
+yo rest-es6
 ```
 
 ## Getting To Know Yeoman
@@ -28,11 +30,11 @@ yo ingenico-api
 MIT © [Wesley]()
 
 
-[npm-image]: https://badge.fury.io/js/generator-ingenico-api.svg
-[npm-url]: https://npmjs.org/package/generator-ingenico-api
-[travis-image]: https://travis-ci.org/WesleyMarques/generator-ingenico-api.svg?branch=master
-[travis-url]: https://travis-ci.org/WesleyMarques/generator-ingenico-api
-[daviddm-image]: https://david-dm.org/WesleyMarques/generator-ingenico-api.svg?theme=shields.io
-[daviddm-url]: https://david-dm.org/WesleyMarques/generator-ingenico-api
-[coveralls-image]: https://coveralls.io/repos/WesleyMarques/generator-ingenico-api/badge.svg
-[coveralls-url]: https://coveralls.io/r/WesleyMarques/generator-ingenico-api
+[npm-image]: https://badge.fury.io/js/generator-rest-es6.svg
+[npm-url]: https://npmjs.org/package/generator-rest-es6
+[travis-image]: https://travis-ci.org/WesleyMarques/generator-rest-es6.svg?branch=master
+[travis-url]: https://travis-ci.org/WesleyMarques/generator-rest-es6
+[daviddm-image]: https://david-dm.org/WesleyMarques/generator-rest-es6.svg?theme=shields.io
+[daviddm-url]: https://david-dm.org/WesleyMarques/generator-rest-es6
+[coveralls-image]: https://coveralls.io/repos/WesleyMarques/generator-rest-es6/badge.svg
+[coveralls-url]: https://coveralls.io/r/WesleyMarques/generator-rest-es6
