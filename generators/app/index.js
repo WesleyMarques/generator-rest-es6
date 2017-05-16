@@ -19,13 +19,6 @@
       super(args, opts);
       this.option('skip-install');
 
-      // this.argument('model', {
-      //   type: String,
-      //   desc: 'In path format. Ex: `./Account.json`',
-      //   required: true
-      // });
-      //
-      // var model = this.fs.readJSON(this.args[0]);
       this.options.appname = path.basename(process.cwd());
       this.props = {};
     }
@@ -78,7 +71,7 @@
         appName: this.props.appname
       });
       copyTemplate(this.fs, this.templatePath('config/env.config.js'), this.destinationPath('config/env.config.js'));
-      copyTemplate(this.fs, this.templatePath('config/_config.js'), this.destinationPath('config/config.js'));
+      copyTemplate(this.fs, this.templatePath('config/_config.json'), this.destinationPath('config/config.json'));
       copyTemplate(this.fs, this.templatePath('config/datasource.js'), this.destinationPath('config/datasource.js'));
       copyTemplate(this.fs, this.templatePath('config/_db-config.js'), this.destinationPath('config/db-config.js'),{
         dbName: this.props.appname,

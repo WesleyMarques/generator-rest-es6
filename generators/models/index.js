@@ -51,7 +51,8 @@
       writing() {
         copyTemplate(this.fs, this.templatePath('_model.js'), this.destinationPath('models/' + this.options.modelObj.name + '.model.js'), {
           modelName: this.options.modelObj.name,
-          modelObj: this.options.modelObj
+          modelObj: this.options.modelObj,
+          modelNamelc: this.options.modelObj.name.toLowerCase()
         });
         copyTemplate(this.fs, this.templatePath('_crud-model.js'), this.destinationPath('controllers/' + this.options.modelObj.name + '-crud-model.js'), {
           modelName: this.options.modelObj.name
@@ -60,7 +61,8 @@
           modelName: this.options.modelObj.name
         });
         copyTemplate(this.fs, this.templatePath('_migration.js'), this.destinationPath('../migrations/' + Date.now() + '-create-' + pluralize.plural(dasherize(this.options.modelObj.name)) + '.js'), {
-            modelName: pluralize.plural(dasherize(this.options.modelObj.name)),
+            modelName: dasherize(this.options.modelObj.name),
+            modelNamelc: this.options.modelObj.name.toLowerCase(),
             modelObj: this.options.modelObj
           });
 

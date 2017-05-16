@@ -15,6 +15,12 @@ const loadModels = (sequelize, app) => {
 			const model = sequelize.import(modelDir);
 			models[model.name] = model;
 		});
+
+		Object.keys(models).forEach(function(modelName) {
+        if ("associate" in models[modelName]) {
+            models[modelName].associate(models);
+        }
+    });
 	} catch (e) {
 		app.log.error(e);
 	} finally {
@@ -27,8 +33,8 @@ export default function(app) {
 	if (!database) {
 		const config = app.configdb;
 		let sequelize;
-		if (process.env.DB_URI) {
-			sequelize = new Sequelize(process.env.DB_URI);
+		if (process.env.DATABASE_URI) {
+			sequelize = new Sequelize(process.env.DATABASE_URI, config.params);
 		} else {
 			sequelize = new Sequelize(
 				config.database,

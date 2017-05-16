@@ -6,9 +6,11 @@ import path from 'path';
 import cors from 'cors';
 import compression from 'compression';
 import cookieParser from 'cookie-parser';
+import debug from 'debug';
+
 import datasource from './config/datasource';
 import dbconfig from './config/db-config';
-import debug from 'debug';
+import config from './config/env.config';
 
 //import-inject
 
@@ -18,7 +20,7 @@ const logError = debug('<%= appName %>:error:server');
 logError.color = 1;
 log.color = 2;
 
-import config from './config/env.config';
+
 
 const app = express();
 app.log = {
@@ -56,7 +58,6 @@ if (process.env.NODE_ENV !== 'test') {
 	app.use(logger('dev'));
 }
 
-app.config = config[process.env.NODE_ENV || 'development'];
 app.configdb = dbconfig;
 app.dbconfig = datasource(app);
 
