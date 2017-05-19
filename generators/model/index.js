@@ -27,7 +27,7 @@
       });
 
       this.options.modelObj = this.fs.readJSON(this.options.model);
-
+      this.options.modelObj.timestamps = this.options.modelObj.timestamps || true;
       this.options.appname = path.basename(process.cwd());
       this.props = {};
     }
@@ -57,7 +57,7 @@
         modelObj: this.options.modelObj
       });
       copyTemplate(this.fs, this.templatePath('_crud-model.js'), this.destinationPath('controllers/' + this.options.modelObj.name + '-crud-model.js'), {
-        modelName: this.options.modelObj.name
+        modelName: S(this.options.modelObj.name).capitalize().toString()
       });
       copyTemplate(this.fs, this.templatePath('_migration.js'), this.destinationPath('../migrations/' + Date.now() + '-create-' + pluralize.plural(dasherize(this.options.modelObj.name)) + '.js'), {
         modelName: S(this.options.modelObj.name).capitalize().toString(),
