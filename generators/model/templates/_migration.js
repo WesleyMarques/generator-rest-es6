@@ -5,16 +5,16 @@
     up: function(queryInterface, Sequelize, done) {
       queryInterface.createTable('<%= modelName %>', {
         id: {
-          type: Sequelize.INTEGER,
+          type: DataTypes.UUID,
           primaryKey: true,
-          autoIncrement: true
+          defaultValue: DataTypes.UUIDV4
         },
-        createdAt: {
+        <%if(modelObj.timestamps){%>createdAt: {
           type: Sequelize.DATE
         },
         updatedAt: {
           type: Sequelize.DATE
-        },
+        },<%}%>
         deletedAt: {
           type: Sequelize.DATE
         },
@@ -24,23 +24,22 @@
         <% for(var j=0; j < modelObj.references.length; j++) {%>
         <% if (modelObj.references && modelObj.references[j].type !== '1:1') {%>
         <%= modelObj.references[j].model.toLowerCase() %>_id: {
-          type: Sequelize.INTEGER,
+          type: Sequelize.UUID,
           references: {
-            model: '<%=modelObj.references[j].model.toLowerCase()%>',
+            model: '<%=S(modelObj.references[j].model.toLowerCase())).underscore().s%>',
             key: 'id',
             deferrable: Sequelize.Deferrable.NOT
           }
         },
         <% }else if(modelObj.references && modelObj.references[j].type !== '1:n'){ %>
         <%= modelObj.references[j].model.toLowerCase() %>_id: {
-          type: Sequelize.INTEGER,
+          type: Sequelize.UUID,
           references: {
             model: '<%=modelObj.references[j].model.toLowerCase()%>',
             key: 'id',
             deferrable: Sequelize.Deferrable.NOT
           }
-        },
-        <% }} %>
+        },<% }} %>
       }).then(function() {
         done();
       });

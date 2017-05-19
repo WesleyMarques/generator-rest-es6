@@ -2,15 +2,38 @@
 (function() {
   'use strict';
 
-  const Generator = require('yeoman-generator');
-  const chalk = require('chalk');
-  const yosay = require('yosay');
-  const path = require('path');
-  const _ = require('lodash');
+  const Generator = require('yeoman-generator'),
+    chalk = require('chalk'),
+    yosay = require('yosay'),
+    path = require('path'),
+    _ = require('lodash'),
+    upperCamelCase = require('uppercamelcase'),
+    fs = require('fs');
+
+  var copyTemplate = (fs, template, path, options) => {
+    fs.copyTpl(template, path, options);
+  };
 
   module.exports = class extends Generator {
 
-    constructor(args, opts) {}
+    constructor(args, opts) {
+      super(args, opts);
+      this.options.appname = path.basename(process.cwd());
+      this.props = {};
+      const dir = this.destinationRoot('./server/models');
+      const models = [];
+      try {
+        if (!fs.existsSync(dir)) return {};
+        fs.readdirSync(dir).forEach(file => {
+          const modelDir = path.join(dir, file).split(path.sep);
+          models.push(modelDir[modelDir.length - 1].split('.')[0]);
+        });
+      } catch (e) {
+        console.log(e);
+      } finally {
+        this.models = models;
+      }
+    }
 
     initializing() {
       this.log(yosay(
@@ -18,12 +41,44 @@
       ));
     }
 
-    prompting(){}
+    prompting() {
+      this.questions = [];
+      this.questions = this.questions.concat({
+        type: 'input',
+        name: 'componentName',
+        message: 'Your component name',
+        default: 'newComponent'
+      }, {
+        type: 'confirm',
+        name: 'validators',
+        message: 'Do you want add validatons in controllers?',
+      },
+      {
+        type: 'checkbox',
+        name: 'models',
+        message: 'Select all models',
+        choices: this.models,
+        default: 'newComponent'
+      });
+      return this.prompt(this.questions).then((answers) => {
+        answers.componentName = upperCamelCase(answers.componentName);
+        this.props = answers;
+      });
+    }
 
-    configuring(){}
+    configuring() {
+      // this.destinationRoot('./server/components/' + this.props.componentName);
+    }
 
-    writing(){}
+    writing() {
+      // copyTemplate(this.fs, this.templatePath('_routes.js'), this.destinationPath('./index.js'), {
+      //   componentName: this.props.componentName,
+      //   models: this.props.models
+      // });
 
-    end(){}
+
+    }
+
+    end() {}
   };
 })();

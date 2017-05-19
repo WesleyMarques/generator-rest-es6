@@ -2,13 +2,14 @@
 (function() {
   'use strict';
 
-  const Generator = require('yeoman-generator');
-  const chalk = require('chalk');
-  const yosay = require('yosay');
-  const path = require('path');
-  const _ = require('lodash');
-  const pluralize = require('pluralize');
-  const dasherize = require('dasherize');
+  const Generator = require('yeoman-generator'),
+    chalk = require('chalk'),
+    yosay = require('yosay'),
+    path = require('path'),
+    _ = require('lodash'),
+    pluralize = require('pluralize'),
+    S = require('string'),
+    fs = require('fs');
 
   var copyTemplate = (fs, template, path, options) => {
     fs.copyTpl(template, path, options);
@@ -39,6 +40,7 @@
 
     prompting() {
       this.questions = [];
+
       return this.prompt(this.questions).then((answers) => {
         this.props = answers;
       });
@@ -50,20 +52,18 @@
 
     writing() {
       copyTemplate(this.fs, this.templatePath('_model.js'), this.destinationPath('models/' + this.options.modelObj.name + '.model.js'), {
-        modelName: this.options.modelObj.name,
-        modelObj: this.options.modelObj,
-        modelNamelc: this.options.modelObj.name.toLowerCase()
+        modelName: S(this.options.modelObj.name).capitalize().toString(),
+        tableName: S(this.options.modelObj.name.toLowerCase()).underscore().s,
+        modelObj: this.options.modelObj
       });
       copyTemplate(this.fs, this.templatePath('_crud-model.js'), this.destinationPath('controllers/' + this.options.modelObj.name + '-crud-model.js'), {
         modelName: this.options.modelObj.name
       });
-      copyTemplate(this.fs, this.templatePath('routes/_routes.js'), this.destinationPath('routes/' + this.options.modelObj.name + '.js'), {
-        modelName: this.options.modelObj.name
-      });
       copyTemplate(this.fs, this.templatePath('_migration.js'), this.destinationPath('../migrations/' + Date.now() + '-create-' + pluralize.plural(dasherize(this.options.modelObj.name)) + '.js'), {
-        modelName: dasherize(this.options.modelObj.name),
-        modelNamelc: this.options.modelObj.name.toLowerCase(),
-        modelObj: this.options.modelObj
+        modelName: S(this.options.modelObj.name).capitalize().toString(),
+        tableName: S(this.options.modelObj.name.toLowerCase()).underscore().s,
+        modelObj: this.options.modelObj,
+        S: S
       });
 
       var modelObjCamel = _.camelCase(this.options.modelObj.name);

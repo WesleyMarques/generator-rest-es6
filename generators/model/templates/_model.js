@@ -1,15 +1,23 @@
 //jshint esversion: 6
 export default (sequelize, DataType) => {
-  const <%= modelName %> = sequelize.define('<%= modelName %>', {
+  const <%= modelName %> = sequelize.define('<%= tableName %>', {
     id: {
-      type: DataType.INTEGER,
+      type: DataTypes.UUID,
       primaryKey: true,
-      autoIncrement: true
+      defaultValue: DataTypes.UUIDV4
     },
-    <% for(var i=0; i < modelObj.fields.length; i++) {%><%= modelObj.fields[i].name %>: {
+    <% for(var i=0; i < modelObj.fields.length; i++) {%>
+    <%= modelObj.fields[i].name %>: {
       type: DataType.<%= modelObj.fields[i].type %>
-    },<% } %>
+    },
+    <% } %>
   }, {
+    hooks: {
+      afterValidate: function(data, options, next) {
+        //TODO
+        return next();
+      }
+    },
     classMethods: {
       associate: function(models) {
         <% for(var j=0; j < modelObj.references.length; j++) {%>
@@ -17,7 +25,8 @@ export default (sequelize, DataType) => {
         <%= modelName %>.belongsTo(models.
           <%=modelObj.references[j].model%>);
         <% }else if(modelObj.references && modelObj.references[j].type !== '1:n'){ %>
-        models.<%=modelObj.references[j].model%>.hasMany(<%= modelName %>);
+        models.
+        <%=modelObj.references[j].model%>.hasMany(<%= modelName %>);
         <% }else{ %>
         <%= modelName %>.belongsToMany(models.
           <%=modelObj.references[j].model%>);
@@ -25,8 +34,10 @@ export default (sequelize, DataType) => {
       }
 
     },
+    timestamps: <%=modelObj.timestamps%>,
+    paranoid: true,
     freezeTableName: true,
-    tableName: '<%=modelNamelc%>'
+    tableName: '<%=tableName%>'
   });
 
   return <%= modelName %>;
