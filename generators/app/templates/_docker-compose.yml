@@ -1,0 +1,27 @@
+version: '2'
+services:
+  <%= appName%>_node:
+    container_name: <%= appName%>_node
+    build:
+    context: .
+    	args:
+     	- NODE_ENV=development
+    working_dir: /usr/src/app
+    volumes:
+     - .:/usr/src/app
+     - /usr/src/app/node_modules
+    ports:
+     - 3000:3000
+    links:
+     - db-<%= dbType%>
+    env_file:
+       - .env
+  db-<%= dbType%>:
+   image: <%= dbImage%>
+   container_name: db-<%= dbType%>
+   environment:
+   - DATABASE_PASSWORD=postgres
+   - DATABASE_USERNAME=postgres
+   - DATABASE_NAME=<%= appName%>_dev
+   ports:
+   - <%= dbPorts%>

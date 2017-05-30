@@ -9,7 +9,7 @@
     "start": "DEBUG=*:server,*:router,-anyModule nodemon --watch ./ --exec babel-node bin/www",
     "test": "npm run lint && npm run test-unit && npm run test-integration && npm run test-contract",
     "test-integration": "NODE_ENV=test mocha --opts tests/integration/mocha.opts test/integration/**/*.js",
-    "test-unit": "NODE_ENV=test mocha --opts tests/unit/mocha.opts test/unit/**/*.js",
+    "test-unit": "NODE_ENV=test mocha --opts test/unit/mocha.opts server/components/**/*.test.js",
     "test-contract": "NODE_ENV=test mocha --opts tests/contract/mocha.opts test/contract/contracts/*.js",
     "lint": "eslint '**/*.js'",
     "lint:fix": "eslint '**/*.js' --fix",

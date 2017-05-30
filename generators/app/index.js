@@ -25,7 +25,7 @@
 
     initializing() {
       this.log(yosay(
-        'Welcome to the awesome ' + chalk.red('generator-ingenico-api') + ' generator!'
+        'Welcome to the awesome ' + chalk.red('generator-rest-es6') + ' generator!'
       ));
     }
 
@@ -43,7 +43,10 @@
         choices: [
           'none',
           'MongoDB',
-          'postgres'
+          'Postgres',
+          'Mysql',
+          'Sqlite',
+          'Mssql'
         ]
       });
       return this.prompt(this.questions).then((answers) => {
@@ -70,23 +73,28 @@
       copyTemplate(this.fs, this.templatePath('bin/_www'), this.destinationPath('bin/www'), {
         appName: this.props.appname
       });
-      copyTemplate(this.fs, this.templatePath('config/env.config.js'), this.destinationPath('config/env.config.js'));
       copyTemplate(this.fs, this.templatePath('config/_config.json'), this.destinationPath('config/config.json'));
       copyTemplate(this.fs, this.templatePath('config/datasource.js'), this.destinationPath('config/datasource.js'));
       copyTemplate(this.fs, this.templatePath('config/_db-config.js'), this.destinationPath('config/db-config.js'),{
         dbName: this.props.appname,
-        dbType: this.props.database
+        dbType: this.props.database.toLowerCase()
       });
-      copyTemplate(this.fs, this.templatePath('server/*'), this.destinationPath('server/'));
+      copyTemplate(this.fs, this.templatePath('test/**/*'), this.destinationPath('test/'));
 
-
+      copyTemplate(this.fs, this.templatePath('_Dockerfile'), this.destinationPath('Dockerfile'));
+      copyTemplate(this.fs, this.templatePath('_docker-compose.yml'), this.destinationPath('docker_compose.yml'),{
+        appName: this.props.appname.toLowerCase(),
+        dbType: this.props.database.toLowerCase(),
+        dbImage:'postgres:9.6.2-alpine',
+        dbPorts: '5432:5432'
+      });
     }
 
     end() {
       this.npmInstall(['express', 'debug', 'body-parser', 'cors', 'compression', 'morgan', 'cookie-parser', 'sequelize', 'pg', 'pg-hstore', 'http-status', 'sequelize-cli'], {
         'save': true
       });
-      this.npmInstall(['mocha', 'chai', 'nodemon', 'supertest', 'testdouble', 'babel-cli', 'babel', 'babel-preset-es2015', 'babel-preset-stage-2'], {
+      this.npmInstall(['mocha', 'chai', 'nodemon', 'supertest', 'testdouble', 'babel-cli', 'babel', 'babel-preset-es2015','babel-preset-es2017'], {
         'saveDev': true
       });
     }

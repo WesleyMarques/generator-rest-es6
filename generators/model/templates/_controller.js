@@ -1,55 +1,53 @@
 //jshint esversion: 6
 import HttpStatus from 'http-status';
 
-const defaultResponse = (data, statusCode = HttpStatus.OK) => ({
-  data,
-  statusCode,
-});
+let instance = null;
 
-const errorResponse = (message, statusCode = HttpStatus.BAD_REQUEST) => defaultResponse({
-  error: message,
-}, statusCode);
+class Controller {
 
-class <%= modelName %>Controller {
-  constructor(<%= modelName %>) {
-    this.<%= modelName %> = <%= modelName %>;
+  constructor(currentModel) {
+    if (!instance) {
+      instance = this;
+    }
+    this.Model = currentModel;
+    return instance;
   }
 
   getAll() {
-    return this.<%= modelName %>.findAll({})
-      .then(result => defaultResponse(result))
-      .catch(error => errorResponse(error.message));
+    return this.Model.findAll({})
+      .then(result => result)
+      .catch(error => error.message);
   }
 
   getById(params) {
-    return this.<%= modelName %>.findOne({
-      where: params,
-    })
-    .then(result => defaultResponse(result))
-    .catch(error => errorResponse(error.message));
+    return this.Model.findOne({
+        where: params,
+      })
+      .then(result => result)
+      .catch(error => error.message);
   }
 
   create(data) {
-    return this.<%= modelName %>.create(data)
-      .then(result => defaultResponse(result, HttpStatus.CREATED))
-      .catch(error => errorResponse(error.message, HttpStatus.UNPROCESSABLE_ENTITY));
+    return this.Model.create(data)
+      .then(result => result)
+      .catch(error => error.message);
   }
 
   update(data, params) {
-    return this.<%= modelName %>.update(data, {
-      where: params,
-    })
-    .then(result => defaultResponse(result))
-    .catch(error => errorResponse(error.message, HttpStatus.UNPROCESSABLE_ENTITY));
+    return this.Model.update(data, {
+        where: params,
+      })
+      .then(result => result)
+      .catch(error => error.message);
   }
 
   delete(params) {
-    return this.<%= modelName %>.destroy({
-      where: params,
-    })
-    .then(result => defaultResponse(result, HttpStatus.NO_CONTENT))
-    .catch(error => errorResponse(error.message, HttpStatus.UNPROCESSABLE_ENTITY));
+    return this.Model.destroy({
+        where: params,
+      })
+      .then(result => result)
+      .catch(error => error.message);
   }
 }
 
-export default <%= modelName %>Controller;
+export default Controller;

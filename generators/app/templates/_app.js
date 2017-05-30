@@ -10,7 +10,6 @@ import debug from 'debug';
 
 import datasource from './config/datasource';
 import dbconfig from './config/db-config';
-import config from './config/env.config';
 
 //import-inject
 

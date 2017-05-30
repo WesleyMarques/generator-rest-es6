@@ -56,7 +56,7 @@
         tableName: S(this.options.modelObj.name.toLowerCase()).underscore().s,
         modelObj: this.options.modelObj
       });
-      copyTemplate(this.fs, this.templatePath('_crud-model.js'), this.destinationPath('controllers/' + this.options.modelObj.name + '-crud-model.js'), {
+      copyTemplate(this.fs, this.templatePath('_controller.js'), this.destinationPath('models/' + this.options.modelObj.name + '.controller.js'), {
         modelName: S(this.options.modelObj.name).capitalize().toString()
       });
       copyTemplate(this.fs, this.templatePath('_migration.js'), this.destinationPath('../migrations/' + Date.now() + '-create-' + pluralize.plural(dasherize(this.options.modelObj.name)) + '.js'), {

@@ -50,8 +50,8 @@
         default: 'newComponent'
       }, {
         type: 'confirm',
-        name: 'validators',
-        message: 'Do you want add validatons in controllers?',
+        name: 'validations',
+        message: 'Do you want add validations in controllers?',
       },
       {
         type: 'checkbox',
@@ -71,7 +71,21 @@
     }
 
     writing() {
-      // copyTemplate(this.fs, this.templatePath('_routes.js'), this.destinationPath('./index.js'), {
+      copyTemplate(this.fs, this.templatePath('_routes.js'), this.destinationPath('./index.js'), {
+        componentName: this.props.componentName,
+        models: this.props.models
+      });
+      // copyTemplate(this.fs, this.templatePath('_middlewares.js'), this.destinationPath('./middlewares.js'), {
+      //   componentName: this.props.componentName,
+      //   models: this.props.models
+      // });
+      // if(this.props.validations){
+      //   copyTemplate(this.fs, this.templatePath('_validator.js'), this.destinationPath('./validations.js'), {
+      //     componentName: this.props.componentName,
+      //     models: this.props.models
+      //   });
+      // }
+      // copyTemplate(this.fs, this.templatePath('_test.js'), this.destinationPath('./unit.test.js'), {
       //   componentName: this.props.componentName,
       //   models: this.props.models
       // });
