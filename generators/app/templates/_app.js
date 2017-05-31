@@ -8,7 +8,7 @@ import compression from 'compression';
 import cookieParser from 'cookie-parser';
 import debug from 'debug';
 
-import datasource from './config/datasource';
+import datasource from './models/';
 import dbconfig from './config/db-config';
 
 //import-inject
@@ -58,7 +58,7 @@ if (process.env.NODE_ENV !== 'test') {
 }
 
 app.configdb = dbconfig;
-app.dbconfig = datasource(app);
+app.dbconfig = datasource(app.configdb);
 
 //router-inject
 

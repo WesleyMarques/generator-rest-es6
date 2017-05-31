@@ -2,36 +2,39 @@
 import Sequelize from 'sequelize';
 import fs from 'fs';
 import path from 'path';
+import sequelizeFixtures from 'sequelize-fixtures';
 
 let database = null;
 
-const loadModels = (sequelize, app) => {
-	const dir = path.join(__dirname, '../server/models/');
+const loadModels = (sequelize) => {
+	const dir = path.join(__dirname, './');
 	const models = [];
 	try {
 		if (!fs.existsSync(dir)) return {};
-		fs.readdirSync(dir).forEach(file => {
+		fs.readdirSync(dir).filter(function(file) {
+            return (file.indexOf(".") !== 0) && (file !== "index.js");
+        }).forEach(file => {
 			const modelDir = path.join(dir, file);
 			const model = sequelize.import(modelDir);
 			models[model.name] = model;
 		});
 
 		Object.keys(models).forEach(function(modelName) {
-        if ("associate" in models[modelName]) {
-            models[modelName].associate(models);
-        }
-    });
+			if ("associate" in models[modelName]) {
+				models[modelName].associate(models);
+			}
+		});
 	} catch (e) {
-		app.log.error(e);
+		console.error(e);
 	} finally {
 
 	}
 	return models;
 };
 
-export default function(app) {
+export default function(configdb) {
 	if (!database) {
-		const config = app.configdb;
+		const config = configdb;
 		let sequelize;
 		if (process.env.DATABASE_URI) {
 			sequelize = new Sequelize(process.env.DATABASE_URI, config.params);
@@ -50,7 +53,7 @@ export default function(app) {
 			models: {},
 		};
 
-		database.models = loadModels(sequelize, app);
+		database.models = loadModels(sequelize);
 
 		sequelize.sync().done(() => database);
 	}

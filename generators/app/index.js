@@ -60,12 +60,16 @@
 
     writing() {
       copyTemplate(this.fs, this.templatePath('.jshint'), this.destinationPath('.jshint'));
-      copyTemplate(this.fs, this.templatePath('_app.js'), this.destinationPath('app.js'),{
-          appName: this.props.appname
+      copyTemplate(this.fs, this.templatePath('_app.js'), this.destinationPath('app.js'), {
+        appName: this.props.appname
       });
       copyTemplate(this.fs, this.templatePath('.gitignore'), this.destinationPath('.gitignore'));
       copyTemplate(this.fs, this.templatePath('.editorconfig'), this.destinationPath('.editorconfig'));
       copyTemplate(this.fs, this.templatePath('.babelrc'), this.destinationPath('.babelrc'));
+      copyTemplate(this.fs, this.templatePath('.env'), this.destinationPath('.env'), {
+        appName: this.props.appname.toLowerCase(),
+        dbType: this.props.database.toLowerCase()
+      });
 
       copyTemplate(this.fs, this.templatePath('_package.json'), this.destinationPath('package.json'), {
         appName: this.props.appname
@@ -73,28 +77,35 @@
       copyTemplate(this.fs, this.templatePath('bin/_www'), this.destinationPath('bin/www'), {
         appName: this.props.appname
       });
-      copyTemplate(this.fs, this.templatePath('config/_config.json'), this.destinationPath('config/config.json'));
-      copyTemplate(this.fs, this.templatePath('config/datasource.js'), this.destinationPath('config/datasource.js'));
-      copyTemplate(this.fs, this.templatePath('config/_db-config.js'), this.destinationPath('config/db-config.js'),{
+      copyTemplate(this.fs, this.templatePath('config/_config.json'), this.destinationPath('config/config.json'), {
+        appName: this.props.appname.toLowerCase(),
+        dbType: this.props.database.toLowerCase()
+      });
+      copyTemplate(this.fs, this.templatePath('models/index.js'), this.destinationPath('models/index.js'));
+      copyTemplate(this.fs, this.templatePath('config/_db-config.js'), this.destinationPath('config/db-config.js'), {
         dbName: this.props.appname,
         dbType: this.props.database.toLowerCase()
       });
       copyTemplate(this.fs, this.templatePath('test/**/*'), this.destinationPath('test/'));
 
       copyTemplate(this.fs, this.templatePath('_Dockerfile'), this.destinationPath('Dockerfile'));
-      copyTemplate(this.fs, this.templatePath('_docker-compose.yml'), this.destinationPath('docker_compose.yml'),{
+      copyTemplate(this.fs, this.templatePath('_docker-compose.yml'), this.destinationPath('docker-compose.yml'), {
         appName: this.props.appname.toLowerCase(),
         dbType: this.props.database.toLowerCase(),
-        dbImage:'postgres:9.6.2-alpine',
+        dbImage: 'postgres:9.6.2-alpine',
         dbPorts: '5432:5432'
       });
     }
 
     end() {
-      this.npmInstall(['express', 'debug', 'body-parser', 'cors', 'compression', 'morgan', 'cookie-parser', 'sequelize', 'pg', 'pg-hstore', 'http-status', 'sequelize-cli'], {
+      this.npmInstall(['express', 'debug', 'body-parser', 'cors', 'compression', 'morgan',
+        'cookie-parser', 'pg', 'pg-hstore', 'http-status', 'sequelize', 'sequelize-cli', 'sequelize-fixtures'
+      ], {
         'save': true
       });
-      this.npmInstall(['mocha', 'chai', 'nodemon', 'supertest', 'testdouble', 'babel-cli', 'babel', 'babel-preset-es2015','babel-preset-es2017'], {
+      this.npmInstall(['mocha', 'chai', 'nodemon', 'supertest', 'testdouble', 'babel-cli',
+        'babel', 'babel-preset-es2015', 'babel-preset-es2017'
+      ], {
         'saveDev': true
       });
     }

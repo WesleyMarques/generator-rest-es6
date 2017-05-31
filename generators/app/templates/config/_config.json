@@ -1,23 +1,23 @@
 {
   "development": {
-    "username": "postgres",
+    "username": "<%= dbType %>",
     "password": "admin",
-    "database": "teste",
+    "database": "<%= appName %>_dev",
     "host": "localhost",
-    "dialect": "postgres"
+    "dialect": "<%= dbType %>"
   },
   "test": {
-    "username": "root",
-    "password": null,
-    "database": "database_test",
+    "username": "<%= dbType %>",
+    "password": "admin",
+    "database": "<%= appName%>_test",
     "host": "127.0.0.1",
-    "dialect": "postgres"
+    "dialect": "<%= dbType %>"
   },
   "production": {
-    "username": "root",
-    "password": null,
-    "database": "database_production",
+    "username": "<%= dbType %>",
+    "password": "admin",
+    "database": "<%= appName %>",
     "host": "127.0.0.1",
-    "dialect": "postgres"
+    "dialect": "<%= dbType %>"
   }
 }
