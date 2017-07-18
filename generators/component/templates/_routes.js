@@ -2,6 +2,9 @@
 import express from 'express';
 
 import Middleware from './middlewares';
+<% if(hasValidator){%>
+import validator from './validator';
+<%}%>
 let router = express.Router();
 
 export default (app) => {
@@ -10,9 +13,9 @@ export default (app) => {
   <% } %>
 
   router.route('/<%- componentName.toLowerCase() %>')
-  .get(middleware.getAll(mainModel))
+  .get(middleware<%= models[i]%>.getAll(mainModel))
   .post((req, res) => {
-    Controller.create(req.body)
+    middleware<%= models[i]%>.create(req.body)
       .then(response => {
         res.status(response.statusCode);
         res.json(response.data);
@@ -21,20 +24,20 @@ export default (app) => {
 
   router.route('/<%- componentName.toLowerCase() %>/:id')
   .get((req, res) => {
-    Controller.getById(req.params)
+    middleware<%= models[i]%>.getById(req.params)
       .then(response => {
         res.status(response.statusCode);
         res.json(response.data);
       });
   })
   .put('/<%- componentName.toLowerCase() %>/:id', (req, res) => {
-    Controller.update(req.body, req.params)
+    middleware<%= models[i]%>.update(req.body, req.params)
       .then(response => {
         res.status(response.statusCode);
         res.json(response.data);
       });
   }).delete('/<%- componentName.toLowerCase() %>/:id', (req, res) => {
-    Controller.delete(req.params)
+    middleware<%= models[i]%>.delete(req.params)
       .then(response => {
         res.status(response.statusCode);
         res.json(response.data);

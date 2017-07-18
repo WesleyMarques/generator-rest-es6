@@ -60,7 +60,7 @@
         default: 'newComponent'
       }, {
         type: 'confirm',
-        name: 'validations',
+        name: 'validation',
         message: 'Do you want add validations in controllers?',
       },
       {
@@ -86,24 +86,23 @@
       }
       copyTemplate(this.fs, this.templatePath('_routes.js'), this.destinationPath('./router.js'), {
         componentName: this.props.componentName,
+        models: this.props.models,
+        hasValidator: this.props.validation
+      });
+      copyTemplate(this.fs, this.templatePath('_middlewares.js'), this.destinationPath('./middlewares.js'), {});
+      if(this.props.validations){
+        copyTemplate(this.fs, this.templatePath('_validator.js'), this.destinationPath('./validations.js'), {
+          componentName: this.props.componentName,
+          models: this.props.models
+        });
+      }
+      copyTemplate(this.fs, this.templatePath('_test.js'), this.destinationPath('./unit.test.js'), {
+        componentName: this.props.componentName,
         models: this.props.models
       });
+
       //inject router in file
       this.fs.write(this.destinationPath('../index.js'), injectRouter(this.props.componentName));
-      // copyTemplate(this.fs, this.templatePath('_middlewares.js'), this.destinationPath('./middlewares.js'), {
-      //   componentName: this.props.componentName,
-      //   models: this.props.models
-      // });
-      // if(this.props.validations){
-      //   copyTemplate(this.fs, this.templatePath('_validator.js'), this.destinationPath('./validations.js'), {
-      //     componentName: this.props.componentName,
-      //     models: this.props.models
-      //   });
-      // }
-      // copyTemplate(this.fs, this.templatePath('_test.js'), this.destinationPath('./unit.test.js'), {
-      //   componentName: this.props.componentName,
-      //   models: this.props.models
-      // });
 
 
     }

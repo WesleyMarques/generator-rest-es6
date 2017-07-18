@@ -47,22 +47,26 @@
     }
 
     configuring() {
-      this.destinationRoot('./server');
+      this.destinationRoot('./server/models');
     }
 
     writing() {
-      if (!this.fs.exists(this.destinationRoot('models/index.js'))) {
-        copyTemplate(this.fs, this.templatePath('_index.js'), this.destinationPath('models/index.js'), {});
+      if (!this.fs.exists(this.destinationRoot('index.js'))) {
+        copyTemplate(this.fs, this.templatePath('_index.js'), this.destinationPath('index.js'), {});
       }
-      copyTemplate(this.fs, this.templatePath('_model.js'), this.destinationPath('models/' + this.options.modelObj.name + '.model.js'), {
+      if (!this.fs.exists(this.destinationRoot('Controller.js'))) {
+        copyTemplate(this.fs, this.templatePath('_controller.js'), this.destinationPath('Controller.js'), {
+          modelName: S(this.options.modelObj.name).capitalize().toString()
+        });
+      }
+      if (!this.fs.exists(this.destinationRoot('../../fixtures/index.js'))) {
+        copyTemplate(this.fs, this.templatePath('fixtures/index.js'), this.destinationPath('../../fixtures/index.js'), {});
+      }
+      copyTemplate(this.fs, this.templatePath('_model.js'), this.destinationPath(this.options.modelObj.name + '.model.js'), {
         modelName: S(this.options.modelObj.name).capitalize().toString(),
         tableName: S(this.options.modelObj.name.toLowerCase()).underscore().s,
         modelObj: this.options.modelObj
       });
-      copyTemplate(this.fs, this.templatePath('_controller.js'), this.destinationPath('models/' + this.options.modelObj.name + '.controller.js'), {
-        modelName: S(this.options.modelObj.name).capitalize().toString()
-      });
-
     }
 
     end() {}
