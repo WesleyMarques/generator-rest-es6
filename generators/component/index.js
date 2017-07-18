@@ -14,6 +14,16 @@
     fs.copyTpl(template, path, options);
   };
 
+  var injectRouter = (componentName) => {
+    var componentNameCamel = _.camelCase(componentName);
+    var importValue = "import " + componentNameCamel + " from './" + componentName + "/router';";
+    var useValue = "app.use('/" + componentNameCamel + "'," + componentNameCamel + "(app));";
+    var file = this.fs.read(this.destinationPath('../index.js'));
+    file = file.replace('//import-inject', importValue + '\n//import-inject');
+    file = file.replace('//router-inject', useValue + '\n//router-inject');
+    return file;
+  };
+
   module.exports = class extends Generator {
 
     constructor(args, opts) {
@@ -67,14 +77,19 @@
     }
 
     configuring() {
-      // this.destinationRoot('./server/components/' + this.props.componentName);
+      this.destinationRoot('./server/components/' + this.props.componentName);
     }
 
     writing() {
-      copyTemplate(this.fs, this.templatePath('_routes.js'), this.destinationPath('./index.js'), {
+      if (!this.fs.exists(this.destinationRoot('../index.js'))) {
+        copyTemplate(this.fs, this.templatePath('_index.js'), this.destinationPath('../index.js'), {});
+      }
+      copyTemplate(this.fs, this.templatePath('_routes.js'), this.destinationPath('./router.js'), {
         componentName: this.props.componentName,
         models: this.props.models
       });
+      //inject router in file
+      this.fs.write(this.destinationPath('../index.js'), injectRouter(this.props.componentName));
       // copyTemplate(this.fs, this.templatePath('_middlewares.js'), this.destinationPath('./middlewares.js'), {
       //   componentName: this.props.componentName,
       //   models: this.props.models

@@ -12,15 +12,14 @@ const errorResponse = (message, statusCode = HttpStatus.BAD_REQUEST) => defaultR
   error: message,
 }, statusCode);
 
-const getControllerInstance = (model) => {
-  return new Controller(model);
-};
+class Middleware extends Controller{
+  constructor(modelInst){
+    super(modelInst);
+  }
 
-class Middleware {
-
-  getAll(model) {
-    let modelCtrl = getControllerInstance(model);
-    modelCtrl.getAll()
+  //Override getAll()
+  getAll() {
+    super.getAll()
       .then(response => {
         res.status(response.statusCode);
         res.json(response.data);

@@ -11,7 +11,7 @@ import debug from 'debug';
 import datasource from './models/';
 import dbconfig from './config/db-config';
 
-//import-inject
+import routes from './components/';
 
 
 const log = debug('<%= appName %>:server');
@@ -60,7 +60,6 @@ if (process.env.NODE_ENV !== 'test') {
 app.configdb = dbconfig;
 app.dbconfig = datasource(app.configdb);
 
-//router-inject
-
+app.use('/api/v1/',routes(app));
 
 export default app;

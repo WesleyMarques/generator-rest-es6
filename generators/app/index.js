@@ -13,6 +13,15 @@
     fs.copyTpl(template, path, options);
   };
 
+  var chooseDBImage = (dbType) =>{
+    switch (dbType) {
+      case 'postgres':
+        return {image: 'postgres:9.6.2-alpine', port: '5432:5432'};
+      default:
+      return '';
+    }
+  };
+
   module.exports = class extends Generator {
 
     constructor(args, opts) {
@@ -60,9 +69,6 @@
 
     writing() {
       copyTemplate(this.fs, this.templatePath('.jshint'), this.destinationPath('.jshint'));
-      copyTemplate(this.fs, this.templatePath('_app.js'), this.destinationPath('app.js'), {
-        appName: this.props.appname
-      });
       copyTemplate(this.fs, this.templatePath('.gitignore'), this.destinationPath('.gitignore'));
       copyTemplate(this.fs, this.templatePath('.editorconfig'), this.destinationPath('.editorconfig'));
       copyTemplate(this.fs, this.templatePath('.babelrc'), this.destinationPath('.babelrc'));
@@ -70,31 +76,37 @@
         appName: this.props.appname.toLowerCase(),
         dbType: this.props.database.toLowerCase()
       });
+      copyTemplate(this.fs, this.templatePath('_Dockerfile'), this.destinationPath('Dockerfile'));
+
+      let dockerDBImage = chooseDBImage(this.props.database.toLowerCase());
+      copyTemplate(this.fs, this.templatePath('_docker-compose.yml'), this.destinationPath('docker-compose.yml'), {
+        appName: this.props.appname.toLowerCase(),
+        dbType: this.props.database.toLowerCase(),
+        dbImage: dockerDBImage.image,
+        dbPorts: dockerDBImage.port
+      });
 
       copyTemplate(this.fs, this.templatePath('_package.json'), this.destinationPath('package.json'), {
-        appName: this.props.appname
-      });
-      copyTemplate(this.fs, this.templatePath('bin/_www'), this.destinationPath('bin/www'), {
         appName: this.props.appname
       });
       copyTemplate(this.fs, this.templatePath('config/_config.json'), this.destinationPath('config/config.json'), {
         appName: this.props.appname.toLowerCase(),
         dbType: this.props.database.toLowerCase()
       });
-      copyTemplate(this.fs, this.templatePath('models/index.js'), this.destinationPath('models/index.js'));
       copyTemplate(this.fs, this.templatePath('config/_db-config.js'), this.destinationPath('config/db-config.js'), {
         dbName: this.props.appname,
         dbType: this.props.database.toLowerCase()
       });
+
+      copyTemplate(this.fs, this.templatePath('bin/_www'), this.destinationPath('bin/www'), {
+        appName: this.props.appname
+      });
+      copyTemplate(this.fs, this.templatePath('_app.js'), this.destinationPath('app.js'), {
+        appName: this.props.appname
+      });
+
       copyTemplate(this.fs, this.templatePath('test/**/*'), this.destinationPath('test/'));
 
-      copyTemplate(this.fs, this.templatePath('_Dockerfile'), this.destinationPath('Dockerfile'));
-      copyTemplate(this.fs, this.templatePath('_docker-compose.yml'), this.destinationPath('docker-compose.yml'), {
-        appName: this.props.appname.toLowerCase(),
-        dbType: this.props.database.toLowerCase(),
-        dbImage: 'postgres:9.6.2-alpine',
-        dbPorts: '5432:5432'
-      });
     }
 
     end() {
