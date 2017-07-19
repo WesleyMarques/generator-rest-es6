@@ -8,10 +8,10 @@ import compression from 'compression';
 import cookieParser from 'cookie-parser';
 import debug from 'debug';
 
-import datasource from './models/';
+import datasource from './server/models/';
 import dbconfig from './config/db-config';
 
-import routes from './components/';
+import routes from './server/components/';
 
 
 const log = debug('<%= appName %>:server');

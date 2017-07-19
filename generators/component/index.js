@@ -81,9 +81,6 @@
     }
 
     writing() {
-      if (!this.fs.exists(this.destinationRoot('../index.js'))) {
-        copyTemplate(this.fs, this.templatePath('_index.js'), this.destinationPath('../index.js'), {});
-      }
       copyTemplate(this.fs, this.templatePath('_routes.js'), this.destinationPath('./router.js'), {
         componentName: this.props.componentName,
         models: this.props.models,

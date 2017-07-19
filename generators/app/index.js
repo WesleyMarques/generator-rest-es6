@@ -105,6 +105,11 @@
         appName: this.props.appname
       });
 
+      copyTemplate(this.fs, this.templatePath('models/_index.js'), this.destinationPath('server/models/index.js'), {
+        appName: this.props.appname
+      });
+      copyTemplate(this.fs, this.templatePath('components/_index.js'), this.destinationPath('server/components/index.js'), {});
+
       copyTemplate(this.fs, this.templatePath('test/**/*'), this.destinationPath('test/'));
 
     }

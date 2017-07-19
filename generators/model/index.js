@@ -51,9 +51,6 @@
     }
 
     writing() {
-      if (!this.fs.exists(this.destinationRoot('index.js'))) {
-        copyTemplate(this.fs, this.templatePath('_index.js'), this.destinationPath('index.js'), {});
-      }
       if (!this.fs.exists(this.destinationRoot('Controller.js'))) {
         copyTemplate(this.fs, this.templatePath('_controller.js'), this.destinationPath('Controller.js'), {
           modelName: S(this.options.modelObj.name).capitalize().toString()

@@ -9,6 +9,7 @@ let router = express.Router();
 
 export default (app) => {
 
-  //router-inject
+	//router-inject
 
+	return router;
 };
