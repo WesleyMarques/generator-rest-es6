@@ -13,12 +13,35 @@
     fs.copyTpl(template, path, options);
   };
 
-  var chooseDBImage = (dbType) =>{
+  var chooseDBImage = (dbType) => {
     switch (dbType) {
       case 'postgres':
-        return {image: 'postgres:9.6.2-alpine', port: '5432:5432'};
+        return {
+          image: 'postgres',
+          port: '5432:5432'
+        };
+      case 'mysql':
+        return {
+          image: "mysql",
+          port: "3306:3306"
+        };
+      case 'sqlite':
+        return {
+          image: "dockerpinata/sqlite",
+          port: "12345:12345"
+        };
+      case 'mssql':
+        return {
+          image: "microsoft/mssql-server-linux",
+          port: "1433:1433"
+        };
+      case 'mongodb':
+        return {
+          image: "mongo",
+          port: "27017:27017"
+        };
       default:
-      return '';
+        return '';
     }
   };
 
