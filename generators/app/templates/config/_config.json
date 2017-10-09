@@ -3,21 +3,21 @@
     "username": "<%= dbType %>",
     "password": "admin",
     "database": "<%= appName %>_dev",
-    "host": "localhost",
+    "host": "db-<%= dbType %>",
     "dialect": "<%= dbType %>"
   },
   "test": {
     "username": "<%= dbType %>",
     "password": "admin",
     "database": "<%= appName%>_test",
-    "host": "127.0.0.1",
+    "host": "db-<%= dbType %>",
     "dialect": "<%= dbType %>"
   },
   "production": {
     "username": "<%= dbType %>",
     "password": "admin",
     "database": "<%= appName %>",
-    "host": "127.0.0.1",
+    "host": "db-<%= dbType %>",
     "dialect": "<%= dbType %>"
   }
 }

@@ -3,7 +3,7 @@ import Sequelize from 'sequelize';
 import fs from 'fs';
 import path from 'path';
 import sequelizeFixtures from 'sequelize-fixtures';
-
+const Op = Sequelize.Op;
 let database = null;
 
 const loadModels = (sequelize) => {
@@ -35,6 +35,7 @@ const loadModels = (sequelize) => {
 export default function(configdb) {
 	if (!database) {
 		const config = configdb;
+		config.params.operatorsAliases = Op;
 		let sequelize;
 		if (process.env.DATABASE_URI) {
 			sequelize = new Sequelize(process.env.DATABASE_URI, config.params);

@@ -8,6 +8,9 @@
   const path = require('path');
   const fs = require('fs');
   const _ = require('lodash');
+  var npmInstallpks = ['express', 'debug', 'body-parser', 'cors', 'compression', 'morgan',
+    'cookie-parser', 'http-status'
+  ];
 
   var copyTemplate = (fs, template, path, options) => {
     fs.copyTpl(template, path, options);
@@ -16,21 +19,25 @@
   var chooseDBImage = (dbType) => {
     switch (dbType) {
       case 'postgres':
+        npmInstallpks = npmInstallpks.concat(['pg', 'pg-hstore']);
         return {
           image: 'postgres',
           port: '5432:5432'
         };
       case 'mysql':
+        npmInstallpks = npmInstallpks.concat(['mysql2']);
         return {
           image: "mysql",
           port: "3306:3306"
         };
       case 'sqlite':
+        npmInstallpks = npmInstallpks.concat(['sqlite3']);
         return {
           image: "dockerpinata/sqlite",
           port: "12345:12345"
         };
       case 'mssql':
+        npmInstallpks = npmInstallpks.concat(['tedious']);
         return {
           image: "microsoft/mssql-server-linux",
           port: "1433:1433"
@@ -128,9 +135,18 @@
         appName: this.props.appname
       });
 
-      copyTemplate(this.fs, this.templatePath('models/_index.js'), this.destinationPath('server/models/index.js'), {
-        appName: this.props.appname
-      });
+      if (this.props.database.toLowerCase().indexOf('mongodb') >= 0) {
+        npmInstallpks = npmInstallpks.concat(['mongoose'])
+        copyTemplate(this.fs, this.templatePath('models/_index-mongoose.js'), this.destinationPath('server/models/index.js'), {
+          appName: this.props.appname
+        });
+      } else {
+        npmInstallpks = npmInstallpks.concat(['sequelize', 'sequelize-cli', 'sequelize-fixtures'])
+        copyTemplate(this.fs, this.templatePath('models/_index.js'), this.destinationPath('server/models/index.js'), {
+          appName: this.props.appname
+        });
+      }
+
       copyTemplate(this.fs, this.templatePath('components/_index.js'), this.destinationPath('server/components/index.js'), {});
 
       copyTemplate(this.fs, this.templatePath('test/**/*'), this.destinationPath('test/'));
@@ -138,9 +154,9 @@
     }
 
     end() {
-      this.npmInstall(['express', 'debug', 'body-parser', 'cors', 'compression', 'morgan',
-        'cookie-parser', 'pg', 'pg-hstore', 'http-status', 'sequelize', 'sequelize-cli', 'sequelize-fixtures'
-      ], {
+      console.log('npms');
+      console.log(npmInstallpks);
+      this.npmInstall(npmInstallpks, {
         'save': true
       });
       this.npmInstall(['mocha', 'chai', 'nodemon', 'supertest', 'testdouble', 'babel-cli',

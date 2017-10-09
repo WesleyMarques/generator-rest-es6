@@ -14,7 +14,7 @@
     "test-contract": "NODE_ENV=test mocha --opts tests/contract/mocha.opts test/contract/contracts/*.js",
     "lint": "eslint '**/*.js'",
     "lint:fix": "eslint '**/*.js' --fix",
-    "build": "npm run build:start",
+    "build": "npm run start",
     "build:start": "npm run migrate && npm run fixtures && npm run start"
   },
   "author": "",

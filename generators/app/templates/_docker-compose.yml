@@ -1,4 +1,4 @@
-version: '2'
+version: '2.1'
 services:
   <%= appName%>_node:
    container_name: <%= appName%>_node
@@ -13,6 +13,8 @@ services:
     - /usr/src/app/node_modules
    ports:
     - 3000:3000
+   depends_on:
+    - db-<%= dbType%>
    links:
     - db-<%= dbType%>
    env_file:
@@ -20,9 +22,5 @@ services:
   db-<%= dbType%>:
    image: <%= dbImage%>
    container_name: db-<%= dbType%>
-   environment:
-   - DATABASE_PASSWORD=postgres
-   - DATABASE_USERNAME=postgres
-   - DATABASE_NAME=<%= appName%>_dev
    ports:
    - <%= dbPorts%>
