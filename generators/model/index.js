@@ -8,7 +8,7 @@
     path = require('path'),
     _ = require('lodash'),
     pluralize = require('pluralize'),
-    S = require('string'),
+    capitalize = require('capitalize'),
     fs = require('fs');
 
   var copyTemplate = (fs, template, path, options) => {
@@ -53,15 +53,15 @@
     writing() {
       if (!this.fs.exists(this.destinationRoot('Controller.js'))) {
         copyTemplate(this.fs, this.templatePath('_controller.js'), this.destinationPath('Controller.js'), {
-          modelName: S(this.options.modelObj.name).capitalize().toString()
+          modelName: capitalize(this.options.modelObj.name).toString()
         });
       }
       if (!this.fs.exists(this.destinationRoot('../../fixtures/index.js'))) {
         copyTemplate(this.fs, this.templatePath('fixtures/index.js'), this.destinationPath('../../fixtures/index.js'), {});
       }
       copyTemplate(this.fs, this.templatePath('_model.js'), this.destinationPath(this.options.modelObj.name + '.model.js'), {
-        modelName: S(this.options.modelObj.name).capitalize().toString(),
-        tableName: S(this.options.modelObj.name.toLowerCase()).underscore().s,
+        modelName: capitalize(this.options.modelObj.name).toString(),
+        tableName: this.options.modelObj.name.toLowerCase(),
         modelObj: this.options.modelObj
       });
     }
