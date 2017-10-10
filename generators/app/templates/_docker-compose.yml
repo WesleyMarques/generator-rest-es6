@@ -1,4 +1,4 @@
-version: '2.1'
+version: '3'
 services:
   <%= appName%>_node:
    container_name: <%= appName%>_node
@@ -22,5 +22,11 @@ services:
   db-<%= dbType%>:
    image: <%= dbImage%>
    container_name: db-<%= dbType%>
+   volumes:
+    - .data/db/<%= dbImage%>:<%=dbPath%>
+   environment:
+   <% for (var i=0; i < environment.length; i++){%>
+    - <%= environment[i] %>
+   <% } %>
    ports:
    - <%= dbPorts%>

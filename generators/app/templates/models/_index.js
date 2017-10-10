@@ -6,14 +6,26 @@ import sequelizeFixtures from 'sequelize-fixtures';
 const Op = Sequelize.Op;
 let database = null;
 
+const init = (config) => {
+	let sequelize = new Sequelize(
+		config.defaultDB,
+		config.username,
+		config.password,
+		config.params
+	);
+	sequelize.query(`CREATE DATABASE ${config.database}`).then(() => {
+		console.log(`${config.database} created`);
+	});
+};
+
 const loadModels = (sequelize) => {
 	const dir = path.join(__dirname, './');
 	const models = [];
 	try {
 		if (!fs.existsSync(dir)) return {};
 		fs.readdirSync(dir).filter(function(file) {
-            return (file.indexOf(".") !== 0) && (file !== "index.js");
-        }).forEach(file => {
+			return (file.indexOf(".") !== 0) && (file !== "index.js");
+		}).forEach(file => {
 			const modelDir = path.join(dir, file);
 			const model = sequelize.import(modelDir);
 			models[model.name] = model;
@@ -47,6 +59,16 @@ export default function(configdb) {
 				config.params
 			);
 		}
+
+		sequelize
+			.authenticate()
+			.then(() => {
+				console.log('Connection has been established successfully.');
+			})
+			.catch(err => {
+				init(config)
+				console.error('Unable to connect to the database:', err.name);
+			});
 
 		database = {
 			sequelize,

@@ -34,7 +34,7 @@ export default function(configdb) {
 				useMongoClient: true
 			});
 		} else {
-			conn = mongoose.connect('mongodb://'+config.host+':27017/'+config.database, {
+			conn = mongoose.connect('mongodb://'+config.params.host+':27017/'+config.database, {
 				useMongoClient: true
 			});
 		}

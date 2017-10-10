@@ -22,30 +22,45 @@
         npmInstallpks = npmInstallpks.concat(['pg', 'pg-hstore']);
         return {
           image: 'postgres',
-          port: '5432:5432'
+          port: '5432:5432',
+          path: '/var/lib/postgresql',
+          environment: [],
+          user: 'postgres',
+          pw: ''
         };
       case 'mysql':
         npmInstallpks = npmInstallpks.concat(['mysql2']);
         return {
           image: "mysql",
-          port: "3306:3306"
+          port: "3306:3306",
+          path: '/var/lib/mysql',
+          environment: ['MYSQL_ROOT_PASSWORD=root'],
+          user: 'root',
+          pw: 'root'
         };
       case 'sqlite':
         npmInstallpks = npmInstallpks.concat(['sqlite3']);
         return {
           image: "dockerpinata/sqlite",
-          port: "12345:12345"
+          port: "12345:12345",
+          path: '',
+          environment: []
         };
       case 'mssql':
         npmInstallpks = npmInstallpks.concat(['tedious']);
         return {
           image: "microsoft/mssql-server-linux",
-          port: "1433:1433"
+          port: "1433:1433",
+          path: '/var/opt/mssql',
+          environment: ['ACCEPT_EULA=Y', 'SA_PASSWORD=Admin12345'],
+          pw: 'Admin12345'
         };
       case 'mongodb':
         return {
           image: "mongo",
-          port: "27017:27017"
+          port: "27017:27017",
+          path: '/data/db',
+          environment: []
         };
       default:
         return '';
@@ -84,7 +99,6 @@
           'MongoDB',
           'Postgres',
           'Mysql',
-          'Sqlite',
           'Mssql'
         ]
       });
@@ -102,18 +116,22 @@
       copyTemplate(this.fs, this.templatePath('.gitignore'), this.destinationPath('.gitignore'));
       copyTemplate(this.fs, this.templatePath('.editorconfig'), this.destinationPath('.editorconfig'));
       copyTemplate(this.fs, this.templatePath('.babelrc'), this.destinationPath('.babelrc'));
-      copyTemplate(this.fs, this.templatePath('.env'), this.destinationPath('.env'), {
-        appName: this.props.appname.toLowerCase(),
-        dbType: this.props.database.toLowerCase()
-      });
       copyTemplate(this.fs, this.templatePath('_Dockerfile'), this.destinationPath('Dockerfile'));
 
       let dockerDBImage = chooseDBImage(this.props.database.toLowerCase());
+      copyTemplate(this.fs, this.templatePath('.env'), this.destinationPath('.env'), {
+        appName: this.props.appname.toLowerCase(),
+        dbType: this.props.database.toLowerCase(),
+        dbUser: dockerDBImage.user,
+        dbPass: dockerDBImage.pw
+      });
       copyTemplate(this.fs, this.templatePath('_docker-compose.yml'), this.destinationPath('docker-compose.yml'), {
         appName: this.props.appname.toLowerCase(),
         dbType: this.props.database.toLowerCase(),
         dbImage: dockerDBImage.image,
-        dbPorts: dockerDBImage.port
+        dbPorts: dockerDBImage.port,
+        dbPath: dockerDBImage.path,
+        environment: dockerDBImage.environment
       });
 
       copyTemplate(this.fs, this.templatePath('_package.json'), this.destinationPath('package.json'), {
