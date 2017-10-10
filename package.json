@@ -1,6 +1,6 @@
 {
   "name": "generator-rest-es6",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "",
   "homepage": "",
   "author": {
@@ -48,7 +48,7 @@
       "mocha": true
     }
   },
-  "repository": "WesleyMarques/generator-ingenico-api",
+  "repository": "WesleyMarques/generator-rest-es6",
   "scripts": {
     "prepublish": "gulp prepublish",
     "test": "gulp",
