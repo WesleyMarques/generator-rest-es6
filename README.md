@@ -5,7 +5,7 @@ An Express generator for Yeoman with models generated from json file.
 
 ## Installation
 
-First, install [Yeoman](http://yeoman.io) and generator-ingenico-api using [npm](https://www.npmjs.com/) (we assume you have pre-installed [node.js](https://nodejs.org/)).
+First, install [Yeoman](http://yeoman.io) and generator-api using [npm](https://www.npmjs.com/) (we assume you have pre-installed [node.js](https://nodejs.org/)).
 
 ```bash
 npm install -g yo

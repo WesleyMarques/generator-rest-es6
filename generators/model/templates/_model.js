@@ -8,11 +8,15 @@ export default (sequelize, DataType) => {
     },
     <% for(var i=0; i < modelObj.fields.length; i++) {%>
     <%= modelObj.fields[i].name %>: {
-      type: DataType.<%= modelObj.fields[i].type %>
-    },
-    <% } %>
+      type: DataType.<%= modelObj.fields[i].type %>,
+      required: <%= modelObj.fields[i].required %>,
+      
+    },<% } %>
   }, {
     hooks: {
+      beforeCreate: (<%= modelName %>Instance, options) => {
+        //TODO
+      },
       afterValidate: function(data, options, next) {
         //TODO
         return next();
@@ -20,19 +24,11 @@ export default (sequelize, DataType) => {
     },
     classMethods: {
       associate: function(models) {
-        <% for(var j=0; j < modelObj.references.length; j++) {%>
-        <% if (modelObj.references && modelObj.references[j].type !== '1:1') {%>
-        <%= modelName %>.belongsTo(models.
-          <%=modelObj.references[j].model%>);
-        <% }else if(modelObj.references && modelObj.references[j].type !== '1:n'){ %>
-        models.
-        <%=modelObj.references[j].model%>.hasMany(<%= modelName %>);
-        <% }else{ %>
-        <%= modelName %>.belongsToMany(models.
-          <%=modelObj.references[j].model%>);
-        <% }} %>
+        <% for(var j=0; j < modelObj.references.length; j++) {%><% if (modelObj.references && modelObj.references[j].type !== '1:1') {%>
+        <%= modelName %>.belongsTo(models.<%=modelObj.references[j].model%>);<% }else if(modelObj.references && modelObj.references[j].type !== '1:n'){ %>
+        models.<%=modelObj.references[j].model%>.hasMany(<%= modelName %>);<% }else{ %>
+        <%= modelName %>.belongsToMany(models.<%=modelObj.references[j].model%>);<% }} %>
       }
-
     },
     timestamps: <%=modelObj.timestamps%>,
     paranoid: true,

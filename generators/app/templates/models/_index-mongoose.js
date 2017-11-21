@@ -4,7 +4,7 @@ import mongoose from 'mongoose';
 import path from 'path';
 let database = null;
 
-const loadModels = () => {
+const loadModels = (mongooseInst) => {
 	const dir = path.join(__dirname, './');
 	const models = [];
 	try {
@@ -14,7 +14,7 @@ const loadModels = () => {
 		}).forEach(file => {
 			const modelDir = path.join(dir, file);
 			const model = modelDir.split('.')[0];
-			models[model.name] = require('./' + moduleName);;
+			models[model.name] = require('./' + moduleName)(mongooseInst);
 		});
 	} catch (e) {
 		console.error(e);
@@ -41,10 +41,11 @@ export default function(configdb) {
 
 		database = {
 			models: {},
-			conn: conn
+			mongoose: conn,
+			Mongoose: mongoose
 		};
 
-		database.models = loadModels();
+		database.models = loadModels(mongooseInst);
 	}
 	return database;
 }
