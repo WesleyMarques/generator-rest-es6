@@ -123,15 +123,15 @@
         appName: this.props.appname.toLowerCase(),
         dbType: this.props.database.toLowerCase(),
         dbUser: dockerDBImage.user,
-        dbPass: dockerDBImage.pw
+        dbPass: dockerDBImage.pw,
+        environment: dockerDBImage.environment
       });
       copyTemplate(this.fs, this.templatePath('_docker-compose.yml'), this.destinationPath('docker-compose.yml'), {
         appName: this.props.appname.toLowerCase(),
         dbType: this.props.database.toLowerCase(),
         dbImage: dockerDBImage.image,
         dbPorts: dockerDBImage.port,
-        dbPath: dockerDBImage.path,
-        environment: dockerDBImage.environment
+        dbPath: dockerDBImage.path
       });
 
       copyTemplate(this.fs, this.templatePath('_package.json'), this.destinationPath('package.json'), {

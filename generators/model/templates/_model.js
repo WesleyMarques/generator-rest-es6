@@ -10,20 +10,20 @@ export default (sequelize, DataType) => {
     <%= modelObj.fields[i].name %>: {
       type: DataType.<%= modelObj.fields[i].type %>,
       required: <%= modelObj.fields[i].required %>,
-      
+
     },<% } %>
   }, {
     hooks: {
       beforeCreate: (<%= modelName %>Instance, options) => {
         //TODO
       },
-      afterValidate: function(data, options, next) {
+      afterValidate: (data, options, next) => {
         //TODO
         return next();
       }
     },
     classMethods: {
-      associate: function(models) {
+      associate: (models) => {
         <% for(var j=0; j < modelObj.references.length; j++) {%><% if (modelObj.references && modelObj.references[j].type !== '1:1') {%>
         <%= modelName %>.belongsTo(models.<%=modelObj.references[j].model%>);<% }else if(modelObj.references && modelObj.references[j].type !== '1:n'){ %>
         models.<%=modelObj.references[j].model%>.hasMany(<%= modelName %>);<% }else{ %>
